@@ -1,20 +1,19 @@
-# Use Python + Playwright base image
+# Use Playwright base image
 FROM mcr.microsoft.com/playwright/python:v1.41.2-focal
 
-# Set working directory
 WORKDIR /app
 
-# Copy dependencies
+# Copy only requirements first
 COPY requirements.txt .
 
-# Install Python dependencies
+# Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy app files
+# Copy the rest of the app
 COPY . .
 
-# Expose port (Render will override)
+# Expose port
 EXPOSE 5000
 
-# Run Flask app
-CMD ["python", "server.py"]
+# Run with Gunicorn for production
+CMD ["gunicorn", "-b", "0.0.0.0:5000", "server:app"]
