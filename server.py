@@ -20,25 +20,20 @@ def generate_pdf():
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
         page = browser.new_page()
-        page.goto(url, wait_until="load")
+        page.goto(url, wait_until="networkidle")  # waits for network requests to finish
         page.wait_for_selector("body")
 
-        full_height = page.evaluate("document.body.scrollHeight")
-        page.set_viewport_size({"width": 1200, "height": full_height})
-
+        # Generate PDF in A4 format, auto-paginated
         page.pdf(
             path=pdf_path,
-            width="400px",
-            height=f"{full_height}px",
-            print_background=True,
-            page_ranges="1",
+            format="A4",               # standard size
+            print_background=True
         )
+
         browser.close()
 
-    # Return file to user
     return send_file(pdf_path, as_attachment=True, download_name="itinerary.pdf")
 
 if __name__ == "__main__":
-    import os
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
