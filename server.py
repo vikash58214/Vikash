@@ -23,15 +23,14 @@ def generate_pdf():
         page.goto(url, wait_until="load")
         page.wait_for_selector("body")
 
-        full_height = page.evaluate("document.body.scrollHeight")
-        page.set_viewport_size({"width": 1200, "height": full_height})
+        # full_height = page.evaluate("document.body.scrollHeight")
+        page.set_viewport_size({"width": 1200, "height": 800})
 
         page.pdf(
             path=pdf_path,
-            width="400px",
-            height=f"{full_height}px",
+            format="A4",
             print_background=True,
-            page_ranges="1",
+            margin={"bottom": "20px"},
         )
         browser.close()
 
