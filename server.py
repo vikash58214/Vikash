@@ -24,7 +24,7 @@ def generate_pdf():
         page.wait_for_selector("body")
 
         full_height = page.evaluate("document.body.scrollHeight")
-        page.set_viewport_size({"width": 500, "height": full_height})
+        page.set_viewport_size({"width": 400, "height": full_height})
 
         page.pdf(
             path=pdf_path,
