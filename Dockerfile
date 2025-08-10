@@ -1,14 +1,20 @@
 # Use Python 3.10 + Playwright base image
 FROM mcr.microsoft.com/playwright/python:v1.41.2-jammy
 
+# Set working directory
 WORKDIR /app
 
+# Copy dependencies
 COPY requirements.txt .
 
+# Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Copy app files
 COPY . .
 
-EXPOSE 8080
+# Expose port (Render will override)
+EXPOSE 5000
 
-CMD ["gunicorn", "-b", "0.0.0.0:8080", "server:app"]
+# Run Flask app
+CMD ["python", "server.py"]
