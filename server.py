@@ -23,17 +23,17 @@ def generate_pdf():
         page.goto(url, wait_until="load")
         page.wait_for_selector("body")
 
-        # full_height = page.evaluate("document.body.scrollHeight")
-        page.set_viewport_size({"width": 1200, "height": 800})
+        full_height = page.evaluate("document.body.scrollHeight")
+        page.set_viewport_size({"width": 1200, "height": full_height})
 
         page.pdf(
             path=pdf_path,
-            format="A4",
+            width="400px",
+            height=f"{full_height}px",
             print_background=True,
-            margin={"bottom": "20px"},
+            page_ranges="1",
         )
         browser.close()
-
     # Return file to user
     return send_file(pdf_path, as_attachment=True, download_name="itinerary.pdf")
 
