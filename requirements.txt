@@ -27,3 +27,4 @@ weasyprint
 webencodings
 Werkzeug
 zopfli
+gunicorn

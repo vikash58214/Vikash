@@ -1,4 +1,3 @@
-# Use Python 3.10 + Playwright base image
 FROM mcr.microsoft.com/playwright/python:v1.41.2-jammy
 
 WORKDIR /app
@@ -6,11 +5,10 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Install chromium for playwright
 RUN playwright install --with-deps chromium
 
 COPY . .
 
-EXPOSE 5000
+EXPOSE 8080
 
-CMD ["python", "server.py"]
+CMD ["gunicorn", "-b", "0.0.0.0:${PORT}", "server:app"]
